@@ -2,7 +2,7 @@ clear;close;clc;
 
 /* Define Remarkable Pro pixel resolution */
 remarkableRes = [1620, 2160];
-axesSize = [1*remarkableRes(1), 0.4*remarkableRes(2)];
+axesSize = [1*remarkableRes(1), 0.35*remarkableRes(2)];
 
 /* Plot data bound definitions */
 xLow = 0.1;      //hertz
@@ -10,9 +10,11 @@ xHigh = 1e6;
 
 yLow = -60;     // dB
 yHigh = 40;
+yInterval = 20;
 
 yPhaseLow = -240;   // degrees
 yPhaseHigh = 90;
+yPhaseInterval = 30;
 
 
 /************** Magnitude figure *****************/
@@ -66,7 +68,6 @@ a1.sub_ticks = [0, 3];
 
 
 /* Define the y axis ticks */
-yInterval = 20;
 yTicks = yLow+yInterval*[0:(yHigh-yLow)/yInterval];
 
 
@@ -125,11 +126,10 @@ f2.auto_resize = "off";
 
 /* Set the x axis ticks to same as magnitude plot */
 a2.x_ticks = tlist(["ticks", "locations", "labels", "interpreters"], xTicks, xLabels);
-a2.sub_ticks = [0, 3];
+a2.sub_ticks = [0, 1];
 
 /* Define the y axis ticks */
-yInterval = 20;
-yTicks = yPhaseLow+yInterval*[0:(yPhaseHigh-yPhaseLow)/yInterval];
+yTicks = yPhaseLow+yPhaseInterval*[0:(yPhaseHigh-yPhaseLow)/yPhaseInterval];
 
 /* Set the y axis ticks and labels*/
 a2.y_ticks = tlist(["ticks", "locations", "labels", "interpreters"], yTicks, string(yTicks));
@@ -140,6 +140,7 @@ a2.font_size = 5;
 /* Set the data bounds of the plot */
 a2.data_bounds = [xLow, yPhaseLow; xHigh, yPhaseHigh];
 a2.auto_ticks = ['off', 'off'];
+a1.sub_ticks = [0, 3];
 
 /* Set the grid */
 a2.grid = [1, 1]             // black color
