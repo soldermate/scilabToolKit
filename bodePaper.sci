@@ -1,17 +1,29 @@
 clear;close;clc;
 
-// https://help.scilab.org/docs/2025.0.0/en_US/axes_properties.html
-
-
-a = newaxes();
-a = sca(a);
-
+/* Define Remarkable Pro pixel resolution */
+remarkableRes = [1620, 2160];
+axesSize = [1*remarkableRes(1), 0.4*remarkableRes(2)];
 
 /* Plot data bound definitions */
 xLow = 0.1;      //hertz
 xHigh = 1e6;
+
 yLow = -60;     // dB
 yHigh = 40;
+
+yPhaseLow = -240;   // degrees
+yPhaseHigh = 90;
+
+
+/************** Magnitude figure *****************/
+scf(0);
+f1 = gcf();
+a1 = newaxes();
+a1 = sca(a1);
+
+f1.figure_name = "Magnitude";
+f1.axes_size = axesSize;
+f1.auto_resize = "off";
 
 
 /* Define the x axis ticks */
@@ -39,7 +51,7 @@ while index < length(base)*length(exponent);
     for n = exponent;
         for i = base;
             if i == 0.1 then
-                xLabels(index) = msprintf("10^%i",n);
+                xLabels(index) = msprintf("$10^%i$",n);
             else
                 xLabels(index) = "";
             end
@@ -48,41 +60,108 @@ while index < length(base)*length(exponent);
     end
 end
 
-
 /* Set the x axis ticks and labels */
-a.x_ticks = tlist(["ticks", "locations", "labels"], xTicks, xLabels);
-a.sub_ticks = [0, 3];
+a1.x_ticks = tlist(["ticks", "locations", "labels", "interpreters"], xTicks, xLabels);
+a1.sub_ticks = [0, 3];
+
+
+/* Define the y axis ticks */
+yInterval = 20;
+yTicks = yLow+yInterval*[0:(yHigh-yLow)/yInterval];
 
 
 /* Set the y axis ticks and labels*/
-yInterval = 10;
-yTicks = yLow+yInterval*[0:(yHigh-yLow)/yInterval];
-a.y_ticks = tlist(["ticks", "locations", "labels"], yTicks, string(yTicks));
+a1.y_ticks = tlist(["ticks", "locations", "labels", "interpreters"], yTicks, string(yTicks));
+
+
+/* Set the tick font size */
+a1.font_size = 5;
 
 
 /* Set the data bounds of the plot */
-a.data_bounds = [xLow, yLow; xHigh, yHigh];
-a.auto_ticks = ['off', 'off'];
+a1.data_bounds = [xLow, yLow; xHigh, yHigh];
+a1.auto_ticks = ['off', 'off'];
 
 
 /* Set the grid */
-a.grid = [1, 1]             // black color
-a.grid_style = [9, 9];      // light dashed lines
-a.grid_position = "background";
+a1.grid = [1, 1]             // black color
+a1.grid_style = [5, 5];      // light dashed lines
+a1.grid_position = "background";
 
 
 /* Set the title */
-t = a.title();
-t.text = "Magnitude Vs Frequency";
+t = a1.title();
+t.text = "Magnitude";
+t.font_size = 5;
 
 /* Set y label */
-y = a.y_label();
+y = a1.y_label();
 y.text = "dB";
+y.font_size = 5;
 
 /* Set x label */
-x = a.x_label();
-x.text = "Frequency";
+x = a1.x_label();
+x.text = "Frequency (Hertz or rad/s)";
+x.font_size = 5;
 
 
 
+/* Magnitude plot */
 semilogx(1,1);
+xs2svg(0, "bodePaperMag", "portrait");
+
+
+
+/************** Phase figure *****************/
+scf(1);
+f2 = gcf();
+a2 = newaxes();
+a2 = sca(a2);
+
+f2.figure_name = "Phase";
+f2.axes_size = axesSize;
+f2.auto_resize = "off";
+
+
+/* Set the x axis ticks to same as magnitude plot */
+a2.x_ticks = tlist(["ticks", "locations", "labels", "interpreters"], xTicks, xLabels);
+a2.sub_ticks = [0, 3];
+
+/* Define the y axis ticks */
+yInterval = 20;
+yTicks = yPhaseLow+yInterval*[0:(yPhaseHigh-yPhaseLow)/yInterval];
+
+/* Set the y axis ticks and labels*/
+a2.y_ticks = tlist(["ticks", "locations", "labels", "interpreters"], yTicks, string(yTicks));
+
+/* Set the tick font size */
+a2.font_size = 5;
+
+/* Set the data bounds of the plot */
+a2.data_bounds = [xLow, yPhaseLow; xHigh, yPhaseHigh];
+a2.auto_ticks = ['off', 'off'];
+
+/* Set the grid */
+a2.grid = [1, 1]             // black color
+a2.grid_style = [5, 5];      // light dashed lines
+a2.grid_position = "background";
+
+
+/* Set the title */
+t = a2.title();
+t.text = "Phase";
+t.font_size = 5;
+
+/* Set y label */
+y = a2.y_label();
+y.text = "Angle (deg)";
+y.font_size = 5;
+
+/* Set x label */
+x = a2.x_label();
+x.text = "Frequency (Hertz or rad/s)";
+x.font_size = 5;
+
+/* Phase plot */
+semilogx(1,1);
+xs2svg(1, "bodePaperPhase", "portrait");
