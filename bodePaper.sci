@@ -2,20 +2,16 @@ clear;close;clc;
 
 /* Define Remarkable Pro pixel resolution */
 remarkableRes = [1620, 2160];
-axesSize = [1*remarkableRes(1), 0.35*remarkableRes(2)];
+axesSize = [1.1*remarkableRes(1), 0.4*remarkableRes(2)];
 
-/* Data bounds and intervals */
-xLow = 0.1; xHigh = 1e6;
-yMagLow = -60; yMagHigh = 40;
-yPhaseLow = -240; yPhaseHigh = 90;  // degrees
-
-yMagInterval = 20;
-yPhaseInterval = 30;
+/* y axis bounds and intervals */
+yMagLow = -60; yMagHigh = 40; yMagInterval = 20;
+yPhaseLow = -225; yPhaseHigh = 90; yPhaseInterval = 45;  // degrees
 
 
 /* Define the x axis ticks and labels */
 base = 0.1:0.1:0.9;      // base multiplier
-exponent = -1:6;        // exponent
+exponent = 0:4;        // exponent
 
 xTicks = zeros(1,length(base)*length(exponent));
 xLabels = emptystr(1,length(base)*length(exponent));
@@ -26,10 +22,11 @@ while index < length(base)*length(exponent);
         for i = base;
             /* ticks */
             xTicks(index) = i*10^n;
+            disp(xTicks(index));
             
             /* labels */
             if i == 0.1 then
-                xLabels(index) = msprintf("$10^%i$",n);
+                xLabels(index) = msprintf("$10^{%i}$",n-1);
             else
                 xLabels(index) = "";
             end
@@ -62,7 +59,7 @@ a1.y_ticks = tlist(["ticks", "locations", "labels", "interpreters"], yTicks, str
 a1.font_size = 5;
 
 /* Set the data bounds of the plot */
-a1.data_bounds = [xLow, yMagLow; xHigh, yMagHigh];
+a1.data_bounds = [min(xTicks), min(yTicks); max(xTicks), max(yTicks)];
 a1.auto_ticks = ['off', 'off'];
 
 /* Set the grid */
@@ -82,7 +79,7 @@ y.font_size = 5;
 
 /* Set x label */
 x = a1.x_label();
-x.text = "Frequency (Hertz or rad/s)";
+//x.text = "Frequency (Hertz or rad/s)";
 x.font_size = 5;
 
 /* Magnitude plot */
@@ -114,9 +111,9 @@ a2.y_ticks = tlist(["ticks", "locations", "labels", "interpreters"], yTicks, str
 a2.font_size = 5;
 
 /* Set the data bounds of the plot */
-a2.data_bounds = [xLow, yPhaseLow; xHigh, yPhaseHigh];
+a2.data_bounds = [min(xTicks), min(yTicks); max(xTicks), max(yTicks)];
 a2.auto_ticks = ["off", "off"];
-a2.sub_ticks = [0, 3];
+a2.sub_ticks = [0, 9];
 
 /* Set the grid */
 a2.grid = [1, 1]             // black color
@@ -135,7 +132,7 @@ y.font_size = 5;
 
 /* Set x label */
 x = a2.x_label();
-x.text = "Frequency (Hertz or rad/s)";
+//x.text = "Frequency (Hertz or rad/s)";
 x.font_size = 5;
 
 /* Phase plot */
