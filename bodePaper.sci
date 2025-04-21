@@ -2,10 +2,10 @@ clear;close;clc;
 
 /* Define Remarkable Pro pixel resolution */
 remarkableRes = [1620, 2160];
-axesSize = [1.1*remarkableRes(1), 0.4*remarkableRes(2)];
+axesSize = [1*remarkableRes(1), 0.35*remarkableRes(2)];
 
 /* y axis bounds and intervals */
-yMagLow = -60; yMagHigh = 40; yMagInterval = 20;
+yMagLow = -60; yMagHigh = 80; yMagInterval = 20;
 yPhaseLow = -225; yPhaseHigh = 90; yPhaseInterval = 45;  // degrees
 
 
@@ -22,7 +22,6 @@ while index < length(base)*length(exponent);
         for i = base;
             /* ticks */
             xTicks(index) = i*10^n;
-            disp(xTicks(index));
             
             /* labels */
             if i == 0.1 then
@@ -51,6 +50,7 @@ a1.sub_ticks = [0, 3];
 
 /* Define the magnitude axis ticks */
 yTicks = yMagLow+yMagInterval*[0:(yMagHigh-yMagLow)/yMagInterval];
+disp(size(yTicks));
 
 /* Set the magnitude axis ticks and labels*/
 a1.y_ticks = tlist(["ticks", "locations", "labels", "interpreters"], yTicks, string(yTicks));
@@ -59,28 +59,19 @@ a1.y_ticks = tlist(["ticks", "locations", "labels", "interpreters"], yTicks, str
 a1.font_size = 5;
 
 /* Set the data bounds of the plot */
+a2.tight_limits = "on";
 a1.data_bounds = [min(xTicks), min(yTicks); max(xTicks), max(yTicks)];
 a1.auto_ticks = ['off', 'off'];
 
 /* Set the grid */
 a1.grid = [1, 1]             // black color
-a1.grid_style = [5, 5];      // light dashed lines
+a1.grid_style = [8, 8];      // light dashed lines
 a1.grid_position = "background";
-
-/* Set the title */
-t = a1.title();
-t.text = "Magnitude";
-t.font_size = 5;
 
 /* Set y label */
 y = a1.y_label();
-y.text = "dB";
+y.text = "Magnitude (dB)";
 y.font_size = 5;
-
-/* Set x label */
-x = a1.x_label();
-//x.text = "Frequency (Hertz or rad/s)";
-x.font_size = 5;
 
 /* Magnitude plot */
 semilogx(1,1);
@@ -111,29 +102,20 @@ a2.y_ticks = tlist(["ticks", "locations", "labels", "interpreters"], yTicks, str
 a2.font_size = 5;
 
 /* Set the data bounds of the plot */
+a2.tight_limits = "on";
 a2.data_bounds = [min(xTicks), min(yTicks); max(xTicks), max(yTicks)];
 a2.auto_ticks = ["off", "off"];
-a2.sub_ticks = [0, 9];
+a2.sub_ticks = [0, 8];
 
 /* Set the grid */
 a2.grid = [1, 1]             // black color
-a2.grid_style = [5, 5];      // light dashed lines
+a2.grid_style = [8, 8];      // light dashed lines
 a2.grid_position = "background";
-
-/* Set the title */
-t = a2.title();
-t.text = "Phase";
-t.font_size = 5;
 
 /* Set y label */
 y = a2.y_label();
-y.text = "Angle (deg)";
+y.text = "Phase (Deg)";
 y.font_size = 5;
-
-/* Set x label */
-x = a2.x_label();
-//x.text = "Frequency (Hertz or rad/s)";
-x.font_size = 5;
 
 /* Phase plot */
 semilogx(1,1);
